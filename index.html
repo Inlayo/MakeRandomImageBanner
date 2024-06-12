@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Canvas Animation Example</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas" width="1500" height="500"></canvas>
+  <input type="file" id="imageInput" accept="image/*">
+
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let currentImage;
+    const imagePositions = [];
+    let animationId;
+    let startTime;
+    const duration = 2;
+
+    async function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    function getRandomPosition(img, prevPosition) {
+      let x, y;
+      let isWithinRange;
+      do {
+        x = Math.random() * (canvas.width - img.width +300) - 150;
+        y = Math.random() * (canvas.height - img.height +300) - 150;
+        isWithinRange = prevPosition && (
+          Math.abs(x - prevPosition.x) < 100 && Math.abs(y - prevPosition.y) < 100
+        );
+      } while (isWithinRange);
+      return { x, y };
+    }
+
+    async function drawImage(img) {
+      currentImage = img;
+      for (let i = 0; i < 100; i++) {
+        const { x, y } = getRandomPosition(img, i > 0 ? imagePositions[i - 1] : null);
+        imagePositions.push({ x, y, angle: 0 });
+      }
+      redrawCanvas();
+      startAnimation();
+    }
+
+    function redrawCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < imagePositions.length; i++) {
+        const { x, y, angle } = imagePositions[i];
+        ctx.save();
+        ctx.translate(x + currentImage.width / 2, y + currentImage.height / 2);
+        ctx.rotate(angle * Math.PI / 180);
+        ctx.drawImage(currentImage, -currentImage.width / 2, -currentImage.height / 2);
+        ctx.restore();
+      }
+    }
+
+    function animate() {
+      const elapsedTime = performance.now() - startTime;
+      if (elapsedTime >= duration) {
+        stopAnimation();
+        return;
+      }
+
+      for (let i = 0; i < imagePositions.length; i++) {
+        const { x, y } = getRandomPosition(currentImage, imagePositions[i]);
+        imagePositions[i].x = x;
+        imagePositions[i].y = y;
+      }
+
+      redrawCanvas();
+      animationId = requestAnimationFrame(animate);
+    }
+
+    function startAnimation() {
+      startTime = performance.now();
+      animate();
+    }
+
+    function stopAnimation() {
+      cancelAnimationFrame(animationId);
+    }
+
+    const imageInput = document.getElementById('imageInput');
+
+    imageInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      const img = await loadImage(URL.createObjectURL(file));
+      drawImage(img);
+    });
+  </script>
+</body>
+</html>
