@@ -35,8 +35,8 @@
       let x, y;
       let isWithinRange;
       do {
-        x = Math.random() * (canvas.width - img.width +300) - 150;
-        y = Math.random() * (canvas.height - img.height +300) - 150;
+        x = Math.random() * (canvas.width - img.width + 300) - 150;
+        y = Math.random() * (canvas.height - img.height + 300) - 150;
         isWithinRange = prevPosition && (
           Math.abs(x - prevPosition.x) < 100 && Math.abs(y - prevPosition.y) < 100
         );
@@ -46,7 +46,7 @@
 
     async function drawImage(img) {
       currentImage = img;
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 500; i++) {
         const { x, y } = getRandomPosition(img, i > 0 ? imagePositions[i - 1] : null);
         imagePositions.push({ x, y, angle: 0 });
       }
