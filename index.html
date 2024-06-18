@@ -20,7 +20,7 @@
     const imagePositions = [];
     let animationId;
     let startTime;
-    const duration = 100; // animation duration in milliseconds
+    const duration = 5; // animation duration in milliseconds
 
     async function loadImage(src) {
       return new Promise((resolve, reject) => {
@@ -59,7 +59,7 @@
 
     async function drawImage(img) {
       currentImage = img;
-      for (let i = 0; i < 800; i++) {
+      for (let i = 0; i < 1000; i++) {
         const { x, y } = getRandomPosition(img, i > 0 ? imagePositions[i - 1] : null);
         imagePositions.push({ x, y, angle: 0 });
       }
