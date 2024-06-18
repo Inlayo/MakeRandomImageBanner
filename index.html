@@ -36,7 +36,7 @@
       const offscreenCtx = offscreenCanvas.getContext('2d');
       offscreenCanvas.width = width;
       offscreenCanvas.height = height;
-      offscreenCtx.drawImage(img, 0, 0, width, height);
+      offscreenCtx.drawImage(img, -10, -10, width, height);
       const resizedImg = new Image();
       resizedImg.src = offscreenCanvas.toDataURL();
       return new Promise((resolve) => {
