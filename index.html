@@ -6,12 +6,18 @@
     canvas {
       border: 1px solid black;
     }
+    name {
+      padding: 5px;
+      height:20px
+    }
   </style>
 </head>
 <body>
   <canvas id="myCanvas" width="1500" height="500"></canvas>
   <input type="file" id="imageInput" accept="image/*">
-
+  <name>
+    made by inla_
+  </name>
   <script>
     const canvas = document.getElementById('myCanvas');
     const ctx = canvas.getContext('2d');
