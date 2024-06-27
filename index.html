@@ -59,7 +59,7 @@
 
     async function drawImage(img) {
       currentImage = img;
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 100; i++) {
         const { x, y } = getRandomPosition(img, i > 0 ? imagePositions[i - 1] : null);
         imagePositions.push({ x, y, angle: 0 });
       }
